@@ -1,0 +1,232 @@
+\fio\\
+\position{} \kafedra
+
+\vspace{2em}
+
+\begin{center}\bf
+УЧЕБНАЯ РАБОТА НА \year{} УЧЕБНЫЙ ГОД
+\end{center}
+
+\hbox to \textwidth {\hbox{Рассмотрен}\hfil\hbox{УТВЕРЖДАЮ}}
+\hbox to \textwidth {\hbox{на заседании кафедры}\hfil\hbox{}}
+\hbox to \textwidth {\hbox{\protokol}\hfil\hbox{Зав. кафедрой\und}}
+
+\vspace{2em}
+
+\newcounter{issue_no} % Текущий номер пункта
+\newcounter{inline} % Часы в строке
+
+% На семестр
+\newcounter{cntlek} % Часы в столбце лекций
+\newcounter{cntsem} % Часы в столбце практик
+\newcounter{cntlab} % Часы в столбце лабораторных
+\newcounter{cntzac} % Часы в столбце зачётов
+\newcounter{cntekz} % Часы в столбце экзаменов
+\newcounter{cntkon} % Часы в столбце консультаций
+\newcounter{cntsam} % Часы в столбце проверки сам. работы
+\newcounter{cntkrl} % Часы в столбце контрольных работ
+\newcounter{cntpra} % Часы в столбце практики
+\newcounter{cntxxx} % Часы в столбце прочего
+\newcounter{cnttotal} % Общее число часов
+
+
+\def\resetcnt{
+\setcounter{issue_no}{0} % Часы в столбце лекций
+\setcounter{cntlek}{0} % Часы в столбце лекций
+\setcounter{cntsem}{0} % Часы в столбце практик
+\setcounter{cntlab}{0} % Часы в столбце лабораторных
+\setcounter{cntzac}{0} % Часы в столбце зачётов
+\setcounter{cntekz}{0} % Часы в столбце экзаменов
+\setcounter{cntkon}{0} % Часы в столбце консультаций
+\setcounter{cntsam}{0} % Часы в столбце проверки сам. работы
+\setcounter{cntkrl}{0} % Часы в столбце контрольных работ
+\setcounter{cntpra}{0} % Часы в столбце практики
+\setcounter{cntxxx}{0} % Часы в столбце прочего
+\setcounter{cnttotal}{0} % Часы в столбце итого
+\setcounter{mini}{15} % Максимальное число пунктов (остаток выводится пустыми строками)
+}
+
+\newcounter{rowlek} % Часы в строке лекций
+\newcounter{rowsem} % Часы в строке практик
+\newcounter{rowlab} % Часы в строке лабораторных
+\newcounter{rowzac} % Часы в строке зачётов
+\newcounter{rowekz} % Часы в строке экзаменов
+\newcounter{rowkon} % Часы в строке консультаций
+\newcounter{rowsam} % Часы в строке проверки сам. работы
+\newcounter{rowkrl} % Часы в строке контрольных работ
+\newcounter{rowpra} % Часы в строке практики
+\newcounter{rowxxx} % Часы в строке прочего
+
+% Команды прибавления часов
+\def\lekc#1{\setcounter{rowlek}{#1}\addtocounter{cntlek}{#1}}
+\def\semprak#1{\setcounter{rowsem}{#1}\addtocounter{cntsem}{#1}}
+\def\labor#1{\setcounter{rowlab}{#1}\addtocounter{cntlab}{#1}}
+\def\zacjot#1{\setcounter{rowzac}{#1}\addtocounter{cntzac}{#1}}
+\def\ekzam#1{\setcounter{rowekz}{#1}\addtocounter{cntekz}{#1}}
+\def\konsul#1{\setcounter{rowkon}{#1}\addtocounter{cntkon}{#1}}
+\def\samost#1{\setcounter{rowsam}{#1}\addtocounter{cntsam}{#1}}
+\def\kontrab#1{\setcounter{rowkrl}{#1}\addtocounter{cntkrl}{#1}}
+\def\praktika#1{\setcounter{rowpra}{#1}\addtocounter{cntpra}{#1}}
+\def\xxx#1{\setcounter{rowxxx}{#1}\addtocounter{cntxxx}{#1}}
+
+% Показать, если не ноль
+\def\showcnt#1{\ifnum\value{#1}>0{\arabic{#1}}\fi}
+
+% Показать, если не ноль; добавить в общий счётчик строки
+\def\collect#1{\addtocounter{inline}{\value{#1}}\showcnt{#1}\setcounter{#1}{0}}
+
+% Переход на след. строку, обнуляем счётчики
+\def\total{
+\collect{rowlek} &
+\collect{rowsem} &
+\collect{rowlab} &
+\collect{rowzac} &
+\collect{rowekz} &
+\collect{rowkon} &
+\collect{rowsam} &
+\collect{rowkrl} &
+\collect{rowpra} &
+\collect{rowxxx} &
+\addtocounter{cnttotal}{\value{inline}}%
+\bf\showcnt{inline}\setcounter{inline}{0} \\
+\hline
+}
+\let\together=\total
+\let\itogo=\total
+
+% Начало строки в плане, параметры: название курса, у кого курс
+\def\plan#1#2{
+\addtocounter{issue_no}{1}
+\arabic{issue_no} & \small #1 & #2 &%
+}
+
+% Начало строки в фактическом выполнении, параметр: название месяца
+\def\fact#1{\multicolumn{3}{|l|}{#1} &}
+\let\fakt=\fact
+
+
+% Эталонная строка для указания ширины столбцов
+% первые три числа - лексии, практики, лабораторные - их много =)
+\def\phantomrow{%
+15 & \small Математический анализ & 23 физики & \bf 468 & \bf 468 &
+\bf 168 & \bf 68 & \bf 68 & \bf 68 & \bf 68 & \bf 68 & \bf 68 & \bf 68 & \bf 968%
+}
+
+\def\emptyrow{&   &   &   &   &   &   &   &   &   &   &   &   &}
+
+% Параметры: семестр, план, фактически
+\def\tables#1#2#3{%
+\vbox{
+\resetcnt
+\begin{longtable}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\raisebox{2em}{\textnumero} &
+\raisebox{2em}{\centering\twolines{Дисциплина,}{форма занятия}} &
+\begin{sideways}\twolines{Факультет,}{курс, группа}\end{sideways} &
+\begin{sideways}Лекции \end{sideways} &
+\begin{sideways}Сем. и прак. \end{sideways} &
+\begin{sideways}Лабор. \end{sideways} &
+\begin{sideways}Зачёты \end{sideways} &
+\begin{sideways}Экзамены \end{sideways} &
+\begin{sideways}Консульт. \end{sideways} &
+\begin{sideways}Сам. раб. \end{sideways} &
+\begin{sideways}Контр. раб. \end{sideways} &
+\begin{sideways}Практика \end{sideways} &
+\begin{sideways}Прочее \end{sideways} &
+\begin{sideways}\bf Итого \end{sideways} \\
+\hline
+
+\tiny1&\tiny\hfil2\hfil&\tiny3&\tiny4&\tiny5&\tiny6&\tiny7&\tiny8&\tiny9&\tiny10&\tiny11&\tiny12&\tiny13&\tiny14\\
+\hline
+\hline
+
+\phantomrow \kill
+
+#2
+
+\addtocounter{mini}{-\value{issue_no}}
+\replicate{\value{mini}}{\emptyrow\\ \hline}
+
+\multicolumn{3}{|l|}{\bf Итого на #1-й семестр:} &
+\bf\showcnt{cntlek} &
+\bf\showcnt{cntsem} &
+\bf\showcnt{cntlab} &
+\bf\showcnt{cntzac} &
+\bf\showcnt{cntekz} &
+\bf\showcnt{cntkon} &
+\bf\showcnt{cntsam} &
+\bf\showcnt{cntkrl} &
+\bf\showcnt{cntpra} &
+\bf\showcnt{cntxxx} &
+\showcnt{cnttotal}\\
+
+\hline
+
+\end{longtable}
+\addtocounter{cntuchebtotal}{\value{cnttotal}} % глобальный счётчик учебной нагрузки (plan.tex)
+}
+
+\vfil
+
+\vbox{
+\resetcnt
+\begin{longtable}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|}
+
+\phantomrow \kill
+
+\multicolumn{14}{l}{{\bf Выполнено фактически за #1-й семестр:}}\\
+
+%\multicolumn{3}{|l|}{}&\tiny4&\tiny5&\tiny6&\tiny7&\tiny8&\tiny9&\tiny10&\tiny11&\tiny12&\tiny13&\tiny14\\
+\hline
+
+#3
+
+\multicolumn{3}{|l|}{\bf Итого за #1-й семестр:} &
+\bf\showcnt{cntlek} &
+\bf\showcnt{cntsem} &
+\bf\showcnt{cntlab} &
+\bf\showcnt{cntzac} &
+\bf\showcnt{cntekz} &
+\bf\showcnt{cntkon} &
+\bf\showcnt{cntsam} &
+\bf\showcnt{cntkrl} &
+\bf\showcnt{cntpra} &
+\bf\showcnt{cntxxx} &
+\showcnt{cnttotal}\\
+\hline
+
+\end{longtable}
+}
+}
+
+
+
+\hbox to \textwidth {\hbox{\bf \nextsection{} УЧЕБНАЯ РАБОТА}\hfil\hbox{\bf ПЛАН НА 1-й семестр}}
+\tables 1 \uchebPLANa\uchebFAKTa
+
+\newpage
+
+\hbox to \textwidth {\hbox{\bf ПЛАН НА 2-й семестр}\hfil\hbox{}}
+\tables 2 \uchebPLANb\uchebFAKTb
+
+\begin{longtable}{|c|l|c|c|c|c|c|c|c|c|c|c|c|c|}
+\phantomrow \kill
+\hline
+\multicolumn{3}{|l|}{\bf Итого за год:} &
+&&&&&&&&&&\\
+\hline
+\end{longtable}
+
+\begin{flushright}
+    ({\em План на год: \arabic{cntuchebtotal}})
+\end{flushright}
+\vfil
+
+\vspace{1em}
+\hbox to \textwidth {\hbox{\date}\hfil\hbox{Подпись преподавателя\und}}
+\vspace{2em}
+\hbox to \textwidth {\hbox{Выполнение утверждено на заседании кафедры}\hfil\hbox{\protokol}}
+
+
+\addtocounter{cnttotaltotal}{\value{cntuchebtotal}} % глобальный счётчик ваще всё! (plan.tex)
+

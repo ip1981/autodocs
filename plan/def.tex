@@ -1,0 +1,28 @@
+
+\def\und{\underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}}
+\def\date{\underline{<<\phantom{123}>>~~~~~~~~~~~~~~~~~}~\underline{\phantom{99999}} г.}
+\def\protokol{Протокол \textnumero{}\underline{\phantom{1234}} от \date}
+
+% Счётчики общего назначения
+\newcounter{mini} % Мин. число пунктов (остаток выводится пустыми строками)
+\newcounter{minii} % Мин. число пунктов второго уровня (остаток выводится пустыми строками)
+
+\newcounter{cntsection} % Разделы
+\def\nextsection{\stepcounter{cntsection}\Roman{cntsection}.} % Разделы римскими
+
+\def\twolines#1#2{\vbox{\hbox{#1}\vspace{0.2em}\hbox{#2}}}
+
+\newcommand*\recur[1]{\csname rn#1\recur}
+\newcommand\rnm[1]{\endcsname{#1}#1}
+\newcommand\rn[1]{}
+\newcommand*\replicate[1]{%
+\csname rn\expandafter\recur
+\romannumeral\number\number#1 000\endcsname\endcsname
+}
+
+
+\def\lines#1{%
+\replicate{#1}{\vspace{1.3em}\hrule}
+\vspace{1.2em}
+}
+

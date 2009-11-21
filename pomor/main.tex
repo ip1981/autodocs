@@ -1,0 +1,273 @@
+\documentclass[12pt,russian]{article}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage{cmap}
+\fi
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{babel}
+
+\usepackage{multirow}
+\usepackage{calc}
+\usepackage{icomma}
+\usepackage{array}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage[unicode=true, pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0},backref=page,colorlinks=false]
+ {hyperref}
+
+\renewcommand{\thefootnote}{\arabic{footnote})}
+
+
+\sloppy
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+\frenchspacing
+\setlength\parskip{\medskipamount}
+\setlength\parindent{1.5cm}
+
+\lccode`\-=`\-
+\defaulthyphenchar=127
+
+
+% Пометка к полю формы
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\newcommand{\formhint}[1]{\textcolor{gray}{\sffamily\tiny #1}}
+\newcommand{\formfield}[3]{\parbox{#1}{\parbox{#1}{\setlength{\baselineskip}{0.6em}{\formhint{#2:}}}\\#3\bigskip}}
+\newcommand{\blankfield}[3]{\formfield{#1}{#2}{\phantom{#3}}}
+
+\def\sign{\begin{flushright}Подпись руководителя проекта:
+    \underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}\end{flushright}}
+
+
+% Ширина поля в титульной таблице
+\newlength{\col}
+\setlength{\col}{0.48\textwidth}
+
+
+
+% \replicate{10}{text} - повторить text 10 раз
+\newcommand*\recur[1]{\csname rn#1\recur}
+\newcommand\rnm[1]{\endcsname{#1}#1}
+\newcommand\rn[1]{}
+\newcommand*\replicate[1]{%
+\csname rn\expandafter\recur
+\romannumeral\number\number#1 000\endcsname\endcsname
+}
+
+% знак рубля
+\def\rub{руб.}
+
+% счётчик числа исполнителей
+\def\maxworkers{10}
+\newcounter{worker}
+
+\newcounter{budget}
+\newcounter{taxd}
+\newcounter{taxm}
+
+
+% Вычисление объёма финансирования
+\input{budget}
+\setcounter{budget}{0}
+\addtocounter{budget}{\ssalary}
+\addtocounter{budget}{\nsalary}
+
+
+\setcounter{taxd}{\arabic{budget} * 23}
+\setcounter{taxm}{\arabic{taxd} - (\arabic{taxd} / 100) * 100}
+\setcounter{taxd}{\arabic{taxd} / 100}
+
+\edef\taxcalc{$(\ssalary + \nsalary)\times23\%$}
+\edef\tax{\arabic{taxd}\ifnum\value{taxm}>0,\arabic{taxm}\fi}
+
+
+\addtocounter{budget}{\materials}
+\addtocounter{budget}{\service}
+\addtocounter{budget}{\trip}
+\addtocounter{budget}{\other}
+\addtocounter{budget}{\arabic{taxd}}
+\edef\budget{\arabic{budget}\ifnum\value{taxm}>0,\arabic{taxm}\fi}
+
+
+
+
+\begin{document}
+
+
+\section*{Заявка на конкурс <<Молодые учёные Поморья>>}
+\begin{center}
+
+\input{title} % основные данные проекта
+
+% создание списка исполнителей
+\input{leader} % данные руководителя проекта
+\edef\team{\name}
+\setcounter{worker}{0}
+\replicate{\maxworkers} % данные исполнителей проекта
+{
+    \stepcounter{worker}
+    \IfFileExists{worker-\arabic{worker}.tex}
+    {
+        \input{worker-\arabic{worker}.tex}
+        \edef\team{\team{}; \name{}}
+    }
+    {}
+}
+
+\input{leader} % снова, чтобы переопределить переменные
+
+\begin{tabular}{>{\raggedright}c|c}
+    \toprule
+    \multirow{3}{*}{\formfield{\col}{Название проекта}{\title}}
+    &    \formfield{\col}{Номер проекта}{} \tabularnewline
+    &    \formfield{\col}{Вид конкурса}{\type} \tabularnewline
+    &    \formfield{\col}{Область знания}{\domain}\tabularnewline    
+     \midrule 
+
+     \multirow{2}{*}{\formfield{\col}{Фамилия, имя, отчество руководителя проекта}{\name}}
+     & \formfield{\col}{Телефон руководителя проекта}{\workphone}\tabularnewline 
+     & \formfield{\col}{Электропочта руководителя проекта}{\email}\tabularnewline
+     \midrule
+
+    \multirow{2}{*}{\formfield{\col}{Полное и краткое название организации, где выполняется проект}
+    {\organization{} (\org)}}
+    & \formfield{\col}{Фамилия, имя, отчество руководителя организации} {\director}\tabularnewline 
+    & \formfield{\col}{Телефон руководителя организации}{\directorphone}\tabularnewline
+    \midrule 
+
+    \multirow{5}{*}{\formfield{\col}{Организация, через которую осуществляется финансирование}
+        {\forganization{} (\forg)}}
+    &    \formfield{\col}{Фамилия, имя, отчество  руководителя организации}{\fdirector}\tabularnewline
+    &    \formfield{\col}{Телефон руководителя организации}{\fdirectorphone}\tabularnewline
+    &    \formfield{\col}{Фамилия, имя, отчество главного бухгалтера}{\bookkeeper}\tabularnewline
+    &    \formfield{\col}{Телефон бухгалтерии}{\bookkeeperphone}\tabularnewline
+    &    \formfield{\col}{Пункт разрешения на открытие внебюджетного лицевого счета,
+    в соответствии с которым  учреждение имеет право получать
+    субсидии на выполнение научных проектов}{\clause}\tabularnewline
+    \midrule
+
+    \multicolumn{2}{l}{\formfield{\col}{Запрашиваемый объем финансирования (в руб.)}
+    {\budget~\rub{}}}\tabularnewline    \midrule 
+
+    \multicolumn{2}{l}{
+    \formfield{\linewidth}{Фамилия, имя, отчество основных исполнителей}
+    {\team{}}
+    }
+    \tabularnewline
+    \midrule
+
+    \formfield{\col}{Подпись руководителя проекта}{}
+    & \formfield{\col}{Дата подачи заявки}{\today}\tabularnewline
+    \bottomrule
+\end{tabular}
+\end{center}
+
+
+
+\newpage
+\section{Содержание проекта}
+
+\input{project}
+\sign
+\newpage
+
+
+
+\newcounter{i}
+\newcommand{\myitem}{{\bf\arabic{i}.} \stepcounter{i}}
+
+\def\info#1#2
+{ % 1 - Р или И, 2 - руководителя или исполнителя
+    \setcounter{i}{1}
+    \setlength\parskip{0pt}
+    \setlength\parindent{0cm}
+    \formfield{\linewidth}{Фамилия, имя, отчество (полностью)}{\myitem \name}\par
+    \formfield{\linewidth}{Дата рождения}{\myitem \birth}\par
+    \formfield{\linewidth}{Учёная степень }{\myitem \degree}\par
+    \formfield{\linewidth}{Год присуждения учёной степени}{\myitem \degreeyear}\par
+    \formfield{\linewidth}{Учёное звание}{\myitem \rank}\par
+    \formfield{\linewidth}{Год присвоения учёного звания}{\myitem \rankyear}\par
+    \formfield{\linewidth}{Полное название организации основного места работы}{\myitem \worganization}\par
+    \formfield{\linewidth}{Сокращенное название организации основного места работы}{\myitem \worg}\par
+    \formfield{\linewidth}{Должность (с указанием кафедры, лаборатории и т.~д.)}{\myitem \position}\par
+    \formfield{\linewidth}{Область научных интересов (ключевые слова, не более 15)}{\myitem \keywords}\par
+    \formfield{\linewidth}{Общее число публикаций}{\myitem \npublications}\par
+    \formfield{\linewidth}{Поддержка проектов заявителя в форме грантов
+    (название других фондов, год, номер и название проекта)}{\myitem \grants}\par
+    \formfield{\linewidth}{Почтовый индекс}{\myitem \index}\par
+    \formfield{\linewidth}{Почтовый адрес}{\myitem \address}\par
+    \formfield{\linewidth}{Телефон служебный}{\myitem \workphone}\par
+    \formfield{\linewidth}{Телефон домашний}{\myitem \homephone}\par
+    \formfield{\linewidth}{Факс}{\myitem \fax}\par
+    \formfield{\linewidth}{Электронный адрес}{\myitem \email}\par
+    \formfield{\linewidth}{Участие в проекте (буква <<Р>> --- руководитель; буква <<И>> --- исполнитель)}{\myitem #1}\par
+
+    \formfield{\linewidth}{Подписи #2:}
+    {\underline{\phantom{АААААААААААААААААААААААААААААААААААА}}}
+}
+
+\section{Сведения о руководителе проекта}
+
+\input{leader.tex}
+\info{Р}{руководителя}
+\newpage
+
+\section{Сведения об исполнителях проекта}
+\setcounter{worker}{0}
+\replicate{\maxworkers}
+{
+    \stepcounter{worker}
+    \IfFileExists{worker-\arabic{worker}.tex}
+    {
+        \input{worker-\arabic{worker}.tex}
+        \info{И}{исполнителя}
+        \newpage
+    }
+    {}
+}
+
+
+
+\section{Смета расходов на выполнение проекта}
+
+\begin{center}
+\begin{tabular}{|>{\raggedright}m{0.4\textwidth}|>{\centering}m{0.4\textwidth}|r|}
+\hline 
+\textbf{Виды расходов} & \textbf{Расчёт} & \textbf{Сумма}\tabularnewline
+\hline
+\hline 
+Оплата труда штатных сотрудников организации & \ssalarycalc & \ssalary~\rub{}\tabularnewline
+\hline 
+Оплата труда внештатных сотрудников & \nsalarycalc & \nsalary~\rub{} \tabularnewline
+\hline 
+Начисления на заработную плату & \taxcalc & \tax~\rub{}\tabularnewline
+\hline 
+Приобретение предметов снабжения и расходных материалов & \materialscalc & \materials~\rub{} \tabularnewline
+\hline 
+Услуги сторонних организаций & \servicecalc & \service~\rub{} \tabularnewline
+\hline 
+Командировочные расходы & \tripcalc & \trip~\rub{} \tabularnewline
+\hline 
+Прочие текущие расходы и услуги & \othercalc & \other~\rub{} \tabularnewline
+\hline
+\hline 
+\textbf{Общая сумма расходов} &  & \textbf{\budget~\rub{}}\tabularnewline
+\hline
+\end{tabular}
+\end{center}
+
+
+\sign
+
+\end{document}
+

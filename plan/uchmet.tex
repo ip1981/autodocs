@@ -1,0 +1,53 @@
+\fio\\
+\position{} \kafedra
+
+\setcounter{mini}{4}
+\setcounter{minii}{4}
+\newcounter{cntuchmet} % Всего часов по уч.-мету
+\setcounter{issue_no}{0}
+\def\emptyrow{&   &   &   &   }
+
+\def\razdel#1{\addtocounter{mini}{-1}%
+\ifnum\value{issue_no}>0\noexpand\replicate{\value{minii}}{\emptyrow\\}\setcounter{minii}{5}\fi%
+\stepcounter{issue_no}\arabic{issue_no} & \bf #1 & & & \\
+\emptyrow\\}
+
+% Строка, параметры: Вида работ, часы, сроки
+\def\plan#1#2#3{\addtocounter{minii}{-1}%
+\addtocounter{cntuchmet}{#2} & #1 & #2 & #3 & \\}
+
+\vspace{2em}
+
+\hbox to \textwidth {\hbox{\bf \nextsection{} УЧЕБНО-МЕТОДИЧЕСКАЯ РАБОТА}\hfil\hbox{\bf на \year{} учебный год}}
+\begin{longtable}{|c|p{0.5\textwidth}|c|c|c|}
+\hline
+\textnumero &
+\hfil Виды работ\hfil &
+\twolines{Объём}{в часах} &
+\twolines{Сроки}{выполнения} &
+\twolines{Фактическое}{выполнение} \\
+\hline
+\hline
+
+\uchmetPLAN
+
+\replicate{\value{mini}}{\razdel{ }}
+\replicate{\value{minii}}{\emptyrow\\}
+
+
+\hline
+\multicolumn{2}{|r|}{\bf Итого:} & \bf \arabic{cntuchmet} & \multicolumn{2}{|l|}{} \\
+\hline
+
+\end{longtable}
+
+\addtocounter{cnttotaltotal}{\value{cntuchmet}} % глобальный счётчик ваще всё! (plan.tex)
+
+
+\vspace{1em}
+{\bf Заключение кафедры о выполненной работе:}
+
+\lines{10}
+
+\hbox to \textwidth {\hbox{}\hfil\hbox{Зав. кафедрой\und}}
+

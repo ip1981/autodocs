@@ -1,0 +1,233 @@
+\fio\\
+\position{} \kafedra
+
+\newcounter{cntnauch} % Всего часов по научной работе
+\setcounter{issue_no}{0}
+\def\min{7}
+
+\def\majorcapwidth{0.49\textwidth}
+\def\minorcapwidth{0.35\textwidth}
+\def\capwidth{0.84\textwidth}
+
+\def\phantomrow{& & 399 \kill}
+\def\gosbudget#1#2{\multicolumn{2}{|p{\capwidth}|}{#1} & #2\addtocounter{mini}{-1}\addtocounter{cntnauch}{#2} \\}
+\def\fond#1#2#3{{#1} & \centering #2& #3\addtocounter{mini}{-1}\addtocounter{cntnauch}{#3} \\}
+
+\let\patent=\gosbudget
+\let\publication=\fond
+\let\konferec=\fond
+\let\eksponat=\fond
+\let\student=\fond
+\let\organ=\fond
+
+\newcounter{nauchi}
+\def\nauchsecsion#1{\stepcounter{nauchi}\arabic{nauchi}. #1}
+
+\vspace{2em}
+
+\hbox to \textwidth {\hbox{\bf \nextsection{} НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА}\hfil\hbox{\bf на \year{} учебный год}}
+
+\vbox{
+\setcounter{mini}{\min}
+\nauchsecsion{Выполнение плановых госбюджетных НИР}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+
+\multicolumn{2}{|p{\capwidth}|}%
+{Научные проблемы, над которыми работает преподаватель}&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\gosbudgetNIR
+
+\replicate{\value{mini}}{\multicolumn{2}{|p{\capwidth}|}{}&\\}
+
+\hline
+\end{longtable}
+}
+
+
+\vbox{
+\setcounter{mini}{\min}
+\nauchsecsion{Работа с российскими и зарубежными научными фондами и программами, хоздоговорная деятельность}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+\centering Планируемый проект&%
+\centering Фонд, организация, программа&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\fondNIR
+
+\replicate{\value{mini}}{&&\\}
+
+\hline
+\end{longtable}
+}
+
+
+
+\vbox{
+\setcounter{mini}{\min}
+\nauchsecsion{Научно-издательская деятельность}
+\begin{longtable}{|p{\minorcapwidth}|p{\majorcapwidth}|c|}
+\phantomrow
+\hline
+\centering Вид издания&%
+\centering Планируемое название&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\pubNIR
+
+\replicate{\value{mini}}{&&\\}
+
+\hline
+\end{longtable}
+}
+
+
+\vbox{
+\setcounter{mini}{\min}
+\nauchsecsion{Работа по защите интеллектуальной собственности}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+
+\multicolumn{2}{|p{\capwidth}|}%
+{\centering Форма работы}&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\patentNIR
+
+\replicate{\value{mini}}{\multicolumn{2}{|p{\capwidth}|}{}&\\}
+
+\hline
+\end{longtable}
+}
+
+
+
+\vbox{
+\setcounter{mini}{\min}
+\nauchsecsion{Участие в научных конференциях (с включением
+в программу конференции или при условии публикации материалов)}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+\centering Форма работы&%
+\centering Сроки&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\konferecNIR
+
+\replicate{\value{mini}}{&&\\}
+
+\hline
+\end{longtable}
+}
+
+
+\vbox{
+\nauchsecsion{Подготовка и представление экспонатов на научные и научно-технические выставках}
+\setcounter{mini}{\min}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+\centering Форма работы&%
+\centering Сроки&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\eksponatNIR
+
+\replicate{\value{mini}}{&&\\}
+
+\hline
+\end{longtable}
+}
+
+
+
+\vbox{
+\nauchsecsion{Организация научно-исследовательской деятельности студентов}
+\setcounter{mini}{\min}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+\centering Форма работы&%
+\centering Сроки&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\studentNIR
+
+\replicate{\value{mini}}{&&\\}
+
+\hline
+\end{longtable}
+}
+
+\vbox{
+\nauchsecsion{Научно-организационная работа}
+\setcounter{mini}{\min}
+\begin{longtable}{|p{\majorcapwidth}|p{\minorcapwidth}|c|}
+\phantomrow
+\hline
+\centering Форма работы&%
+\centering Сроки&%
+{\twolines{Кол-во}{часов}}\\
+
+\hline
+\hline
+
+\organNIR
+
+\replicate{\value{mini}}{&&\\}
+
+\hline
+\end{longtable}
+}
+
+
+
+
+
+\vbox{
+\begin{longtable}{p{\minorcapwidth}p{\majorcapwidth}c}
+\phantomrow
+\multicolumn{2}{r}{\bf Всего часов:}&\bf\arabic{cntnauch}\\
+\end{longtable}
+}
+
+\newpage
+{\bf Заключение кафедры о выполненнии плана НИР:}
+
+\setcounter{mini}{0}
+\replicate{8}{\stepcounter{mini}Раздел~\arabic{mini}.
+\lines{4}
+}
+
+\addtocounter{cnttotaltotal}{\value{cntnauch}} % глобальный счётчик ваще всё! (plan.tex)
+
+\vfill
+%\hbox to \textwidth {\hbox{}\hfil\hbox{Зав. кафедрой\und}}
+

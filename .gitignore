@@ -1,0 +1,10 @@
+*.aux
+*.blg
+*.lo?
+*.bbl
+*.toc
+*.out
+.directory
+*~
+*.bak
+

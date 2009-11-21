@@ -1,0 +1,275 @@
+\documentclass[12pt,a4paper,russian]{article}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage{cmap}
+\fi
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage{array}
+\usepackage{babel}
+\usepackage{rotating}
+\usepackage{longtable}
+\usepackage{hhline}
+
+
+\geometry{a4paper,tmargin=1cm,bmargin=1cm,lmargin=1cm,rmargin=1cm}
+\pagestyle{empty}
+\frenchspacing
+
+\setlength\parskip{\medskipamount}
+\setlength\parindent{0pt}
+
+\sloppy
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+
+
+\hyphenation{Нью-то-на---Лейб-ни-ца}
+
+% =================================================
+\def\month{апрель}
+\def\year{2009}
+
+\def\faculty{физический}
+\def\cathedra{теоретической физики}
+\def\teacher{И.~Н.~Пашев}
+\def\degree{канд. физ.-мат. наук}
+
+
+
+
+
+
+
+
+
+
+
+% ----------------------------- СТАТИСТИКА по ГРУППАМ +
+% делается с помошью индекса
+% \indexentry{<факультет> & <курс> & <группа> = <тип занятия> <кол-во часов>}{...}
+% обрабатывается программой на перле (makestat.pl)
+
+\makeindex
+
+% типы занятий:
+% 0 - лекции,
+% 1 - практики,
+% 2 - лабораторные
+% ...
+\newcounter{type}
+
+
+% Если есть файл статистики - подключаем его
+% внём нужен макрос \stat,
+% который оборачиваем в \statistics
+\newread\instream
+\openin\instream= \jobname.stat
+\ifeof\instream\def\statistics{}
+\else\closein\instream
+ \input{\jobname.stat}
+ \def\statistics{
+  \multicolumn{2}{l}{} & \multicolumn{4}{l}{В том числе:} & \multicolumn{10}{r}{~}\\
+  \hhline{~~-------------}
+  \stat}
+\fi
+
+
+% записать данные о занятии в инндекс
+\def\collectgrp#1#2#3{\index{#1 & #2 & #3 @ type=\arabic{type} hours=\arabic{hours}}}
+
+%--------------------------------------------------------------------------
+
+% Счётчики занятий
+\newcounter{ctotal}
+\newcounter{clk}
+\newcounter{cpr}
+\newcounter{clb}
+\newcounter{cza}
+\newcounter{cek}
+\newcounter{cko}
+\newcounter{cir}
+\newcounter{ckr}
+\newcounter{ctr}
+
+% Число часов в строке (см. \p и \pp)
+\newcounter{hours}
+
+
+% Виды занятий
+\def\lk{\setcounter{type}{0}\addtocounter{clk}{\value{hours}}\arabic{hours}&&&&&&&&&}
+\def\pr{\setcounter{type}{1}\addtocounter{cpr}{\value{hours}}&\arabic{hours}&&&&&&&&}
+\def\lb{\setcounter{type}{2}\addtocounter{clb}{\value{hours}}&&\arabic{hours}&&&&&&&}
+\def\za{\setcounter{type}{3}\addtocounter{cza}{\value{hours}}&&&\arabic{hours}&&&&&&}
+\def\ek{\setcounter{type}{4}\addtocounter{cek}{\value{hours}}&&&&\arabic{hours}&&&&&}
+\def\ko{\setcounter{type}{5}\addtocounter{cko}{\value{hours}}&&&&&\arabic{hours}&&&&}
+\def\ir{\setcounter{type}{6}\addtocounter{cir}{\value{hours}}&&&&&&\arabic{hours}&&&}
+\def\kr{\setcounter{type}{7}\addtocounter{ckr}{\value{hours}}&&&&&&&\arabic{hours}&&}
+\def\tr{\setcounter{type}{8}\addtocounter{ctr}{\value{hours}}&&&&&&&&\arabic{hours}&}
+
+% Пары (время занятий)
+\def\p#1{\parbox {0.04\textwidth}
+{\vspace{0.2em}
+\setcounter{hours}{2}%Число часов
+\ifcase #1 ? \or
+08:30-\\-10:05 \or
+10:20-\\-11:55 \or
+12:25-\\-14:00 \or
+14:15-\\-15:50 \or
+16:05-\\-17:40 \or
+17:55-\\-19:30 \or
+19:45-\\-21:20
+?
+\fi
+\vspace{0.2em}}}
+
+% Несколько пар подряд \\pp24 (время занятий)
+\def\pp#1#2{\parbox {0.04\textwidth}
+{\vspace{0.2em}
+\setcounter{hours}{#2}%Число часов
+\addtocounter{hours}{#2}
+\addtocounter{hours}{2}
+\addtocounter{hours}{-#1}
+\addtocounter{hours}{-#1}
+\ifcase #1 ? \or
+08:30-\\\or
+10:20-\\\or
+12:25-\\\or
+14:15-\\\or
+16:05-\\\or
+17:55-\\\or
+19:45-\\
+\else
+?
+\fi
+\ifcase #2 ? \or
+-10:05 \or
+-11:55 \or
+-14:00 \or
+-15:50 \or
+-17:40 \or
+-19:30 \or
+-21:20
+\else
+?
+\fi
+\vspace{0.2em}}}
+
+\def\time#1#2{\parbox {0.04\textwidth} {\vspace{0.2em} #1-\\-#2 \vspace{0.2em}}}
+
+% Одна строка в таблице
+\def\issue#1#2#3#4#5#6#7
+{%
+#1 & \tiny #2 & #3 & #4 & \tiny #5 &
+\parbox{0.25\textwidth}{\vspace{0.2em}\tiny #6} & #7\collectgrp{#3}{#4}{#5}\\ \hline}
+
+% =================================================
+
+\begin{document}
+
+\begin{center}
+{\bf
+МЕСЯЧНАЯ ВЕДОМОСТЬ}\\
+учёта работы профессорско-преподавательского состава\\
+за {\bf \month{} \year{}}~года.
+
+Факультет {\bf\faculty{}}, кафедра {\bf\cathedra{}}.\\
+{\bf\teacher{}}, {\degree{}}.
+\end{center}
+
+
+% \tiny
+\scriptsize
+% \footnotesize
+% \small
+% \normalsize
+% \large
+% \Large
+% \LARGE
+% \huge
+% \Huge
+
+
+\begin{longtable}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+\hline
+&&&&&&
+\multicolumn{9}{c|}{Кол-во часов по видам занятий} &
+\\
+\hhline{~~~~~~|-|-|-|-|-|-|-|-|-|~}
+\begin{sideways}Дата\end{sideways} &
+\begin{sideways}Часы\end{sideways} &
+\begin{sideways}Факультет\end{sideways} &
+\begin{sideways}Курс\end{sideways} &
+\begin{sideways}Группа\end{sideways} &
+\raisebox{2em}{Содержание занятий} &
+\begin{sideways}лекции \end{sideways} &
+\begin{sideways}сем. и пр. \end{sideways} &
+\begin{sideways}лабор. \end{sideways} &
+\begin{sideways}зачёты \end{sideways} &
+\begin{sideways}экзамены \end{sideways} &
+\begin{sideways}консульт. \end{sideways} &
+\begin{sideways}инд. раб. \end{sideways} &
+\begin{sideways} ~ \end{sideways} &
+\begin{sideways}Практика \end{sideways} &
+\raisebox{2em}{Подпись} \\
+\hline
+1&2&3&4&5&6&7&8&9&10&11&12&13&14&15&16 \\
+\hline
+\hline
+\endfirsthead
+
+\multicolumn{16}{l}{\it Продолжение. Начало на обороте.} \\
+1&2&3&4&5&6&7&8&9&10&11&12&13&14&15&16 \\
+\hline
+\hline
+
+\endhead
+\multicolumn{16}{r}{\it Продолжение на обороте.}
+\endfoot
+\endlastfoot
+
+
+\input{\jobname.inc}
+
+
+\multicolumn{6}{r|}{\bf Итого:} &
+\ifnum\value{clk}>0\bf\arabic{clk}\fi &
+\ifnum\value{cpr}>0\bf\arabic{cpr}\fi &
+\ifnum\value{clb}>0\bf\arabic{clb}\fi &
+\ifnum\value{cza}>0\bf\arabic{cza}\fi &
+\ifnum\value{cek}>0\bf\arabic{cek}\fi &
+\ifnum\value{cko}>0\bf\arabic{cko}\fi &
+\ifnum\value{cir}>0\bf\arabic{cir}\fi &
+\ifnum\value{ckr}>0\bf\arabic{ckr}\fi &
+\ifnum\value{ctr}>0\bf\arabic{ctr}\fi & \\
+%\hhline{~~~~~~----------}
+
+% Добавить статистику, если она есть
+\statistics{}
+
+\addtocounter{ctotal}{\value{clk}}%
+\addtocounter{ctotal}{\value{cpr}}%
+\addtocounter{ctotal}{\value{clb}}%
+\addtocounter{ctotal}{\value{cza}}%
+\addtocounter{ctotal}{\value{cek}}%
+\addtocounter{ctotal}{\value{cko}}%
+\addtocounter{ctotal}{\value{cir}}%
+\addtocounter{ctotal}{\value{ckr}}%
+\addtocounter{ctotal}{\value{ctr}}\kill
+
+\multicolumn{16}{c}{}\\
+\multicolumn{16}{r}{\it Всего за \month: \arabic{ctotal}}
+
+\end{longtable}
+
+\normalsize
+
+Выполнение утверждаю. Зав. кафедрой \underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}
+
+
+\end{document}
+

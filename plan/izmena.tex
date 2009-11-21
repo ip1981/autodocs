@@ -1,0 +1,42 @@
+\fio\\
+\position{} \kafedra
+
+\setcounter{minii}{39}
+\setcounter{issue_no}{0}
+\def\emptyrow{&   &   &   }
+
+\def\razdel#1{\addtocounter{mini}{-1}%
+\ifnum\value{issue_no}>0\noexpand\replicate{\value{minii}}{\emptyrow\\}\setcounter{minii}{5}\fi%
+\stepcounter{issue_no}\arabic{issue_no} & \bf #1 & & & \\
+\emptyrow\\}
+
+% Строка, параметры: Вида работ, часы, сроки
+\def\plan#1#2#3{\addtocounter{minii}{-1}%
+\addtocounter{cntvospit}{#2} & #1 & #2 & #3 & \\}
+
+\vspace{2em}
+
+\hbox to \textwidth {\hbox{\bf \nextsection{} ИЗМЕНЕНИЯ В ПЛАНЕ}\hfil\hbox{\bf на \year{} учебный год}}
+\begin{longtable}{|c|p{0.3\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}|}
+\hline
+\textnumero &
+\centering Суть изменений &
+\centering \twolines{Решение кафедры}{(протокол, дата)} &
+\hfil Итоги выполенния \hfil \\
+
+\hline
+\hline
+
+\replicate{\value{minii}}{\emptyrow\\}
+
+\hline
+
+\end{longtable}
+
+
+\vfill
+
+\hbox to \textwidth {\hbox{}\hfil\hbox{Преподаватель\und}}
+\vspace{2em}
+\hbox to \textwidth {\hbox{}\hfil\hbox{Зав. кафедрой\und}}
+
