@@ -24,7 +24,7 @@
 \newcounter{cntekz} % Часы в столбце экзаменов
 \newcounter{cntkon} % Часы в столбце консультаций
 \newcounter{cntsam} % Часы в столбце проверки сам. работы
-\newcounter{cntkrl} % Часы в столбце контрольных работ
+\newcounter{cntind} % Часы в столбце контрольных работ
 \newcounter{cntpra} % Часы в столбце практики
 \newcounter{cntxxx} % Часы в столбце прочего
 \newcounter{cnttotal} % Общее число часов
@@ -39,13 +39,15 @@
 \setcounter{cntekz}{0} % Часы в столбце экзаменов
 \setcounter{cntkon}{0} % Часы в столбце консультаций
 \setcounter{cntsam}{0} % Часы в столбце проверки сам. работы
-\setcounter{cntkrl}{0} % Часы в столбце контрольных работ
+\setcounter{cntind}{0} % Часы в столбце контрольных работ
 \setcounter{cntpra}{0} % Часы в столбце практики
 \setcounter{cntxxx}{0} % Часы в столбце прочего
 \setcounter{cnttotal}{0} % Часы в столбце итого
 \setcounter{mini}{15} % Максимальное число пунктов (остаток выводится пустыми строками)
 }
 
+% Для фактических часов, можно несколько раз писать \lekc{3}{\lekc{4}...
+% см. ниже
 \newcounter{rowlek} % Часы в строке лекций
 \newcounter{rowsem} % Часы в строке практик
 \newcounter{rowlab} % Часы в строке лабораторных
@@ -53,9 +55,21 @@
 \newcounter{rowekz} % Часы в строке экзаменов
 \newcounter{rowkon} % Часы в строке консультаций
 \newcounter{rowsam} % Часы в строке проверки сам. работы
-\newcounter{rowkrl} % Часы в строке контрольных работ
+\newcounter{rowind} % Часы в строке контрольных работ
 \newcounter{rowpra} % Часы в строке практики
 \newcounter{rowxxx} % Часы в строке прочего
+
+\newcounter{yearlek} % Часы лекций в год (фактически)
+\newcounter{yearsem} % Часы практик в год (фактически)
+\newcounter{yearlab} % Часы лабораторных в год (фактически)
+\newcounter{yearzac} % Часы зачётов в год (фактически)
+\newcounter{yearekz} % Часы экзаменов в год (фактически)
+\newcounter{yearkon} % Часы консультаций в год (фактически)
+\newcounter{yearsam} % Часы проверки сам. работы в год (фактически)
+\newcounter{yearind} % Часы контрольных работ в год (фактически)
+\newcounter{yearpra} % Часы практики в год (фактически)
+\newcounter{yearxxx} % Часы прочего в год (фактически)
+\newcounter{yeartotal} % Часы всего в год (фактически)
 
 % Команды прибавления часов
 \def\lekc#1{\setcounter{rowlek}{#1}\addtocounter{cntlek}{#1}}
@@ -65,7 +79,7 @@
 \def\ekzam#1{\setcounter{rowekz}{#1}\addtocounter{cntekz}{#1}}
 \def\konsul#1{\setcounter{rowkon}{#1}\addtocounter{cntkon}{#1}}
 \def\samost#1{\setcounter{rowsam}{#1}\addtocounter{cntsam}{#1}}
-\def\kontrab#1{\setcounter{rowkrl}{#1}\addtocounter{cntkrl}{#1}}
+\def\indiv#1{\setcounter{rowind}{#1}\addtocounter{cntind}{#1}}
 \def\praktika#1{\setcounter{rowpra}{#1}\addtocounter{cntpra}{#1}}
 \def\xxx#1{\setcounter{rowxxx}{#1}\addtocounter{cntxxx}{#1}}
 
@@ -83,8 +97,8 @@
 \collect{rowzac} &
 \collect{rowekz} &
 \collect{rowkon} &
+\collect{rowind} &
 \collect{rowsam} &
-\collect{rowkrl} &
 \collect{rowpra} &
 \collect{rowxxx} &
 \addtocounter{cnttotal}{\value{inline}}%
@@ -129,8 +143,8 @@
 \begin{sideways}Зачёты \end{sideways} &
 \begin{sideways}Экзамены \end{sideways} &
 \begin{sideways}Консульт. \end{sideways} &
-\begin{sideways}Сам. раб. \end{sideways} &
-\begin{sideways}Контр. раб. \end{sideways} &
+\begin{sideways}Индив. раб. \end{sideways} &
+\begin{sideways}Самост. раб. \end{sideways} &
 \begin{sideways}Практика \end{sideways} &
 \begin{sideways}Прочее \end{sideways} &
 \begin{sideways}\bf Итого \end{sideways} \\
@@ -154,8 +168,8 @@
 \bf\showcnt{cntzac} &
 \bf\showcnt{cntekz} &
 \bf\showcnt{cntkon} &
+\bf\showcnt{cntind} &
 \bf\showcnt{cntsam} &
-\bf\showcnt{cntkrl} &
 \bf\showcnt{cntpra} &
 \bf\showcnt{cntxxx} &
 \showcnt{cnttotal}\\
@@ -182,16 +196,16 @@
 #3
 
 \multicolumn{3}{|l|}{\bf Итого за #1-й семестр:} &
-\bf\showcnt{cntlek} &
-\bf\showcnt{cntsem} &
-\bf\showcnt{cntlab} &
-\bf\showcnt{cntzac} &
-\bf\showcnt{cntekz} &
-\bf\showcnt{cntkon} &
-\bf\showcnt{cntsam} &
-\bf\showcnt{cntkrl} &
-\bf\showcnt{cntpra} &
-\bf\showcnt{cntxxx} &
+\bf\showcnt{cntlek}\addtocounter{yearlek}{\value{cntlek}}&
+\bf\showcnt{cntsem}\addtocounter{yearsem}{\value{cntsem}}&
+\bf\showcnt{cntlab}\addtocounter{yearlab}{\value{cntlab}}&
+\bf\showcnt{cntzac}\addtocounter{yearzac}{\value{cntzac}}&
+\bf\showcnt{cntekz}\addtocounter{yearekz}{\value{cntekz}}&
+\bf\showcnt{cntkon}\addtocounter{yearkon}{\value{cntkon}}&
+\bf\showcnt{cntind}\addtocounter{yearind}{\value{cntind}}&
+\bf\showcnt{cntsam}\addtocounter{yearsam}{\value{cntsam}}&
+\bf\showcnt{cntpra}\addtocounter{yearpra}{\value{cntpra}}&
+\bf\showcnt{cntxxx}\addtocounter{yearxxx}{\value{cntxxx}}&
 \showcnt{cnttotal}\\
 \hline
 
@@ -213,7 +227,28 @@
 \phantomrow \kill
 \hline
 \multicolumn{3}{|l|}{\bf Итого за год:} &
-&&&&&&&&&&\\
+\arabic{yearlek}&
+\arabic{yearsem}&
+\arabic{yearlab}&
+\arabic{yearzac}&
+\arabic{yearekz}&
+\arabic{yearkon}&
+\arabic{yearind}&
+\arabic{yearsam}&
+\arabic{yearpra}&
+\arabic{yearxxx}&
+\addtocounter{yeartotal}{\value{yearlek}}%
+\addtocounter{yeartotal}{\value{yearsem}}%
+\addtocounter{yeartotal}{\value{yearlab}}%
+\addtocounter{yeartotal}{\value{yearzac}}%
+\addtocounter{yeartotal}{\value{yearekz}}%
+\addtocounter{yeartotal}{\value{yearkon}}%
+\addtocounter{yeartotal}{\value{yearind}}%
+\addtocounter{yeartotal}{\value{yearsam}}%
+\addtocounter{yeartotal}{\value{yearpra}}%
+\addtocounter{yeartotal}{\value{yearxxx}}%
+\bf\arabic{yeartotal}
+\\
 \hline
 \end{longtable}
 
